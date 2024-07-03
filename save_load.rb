@@ -1,6 +1,9 @@
 require 'csv'
+require 'json'
 
 class SaveLoad
+
+  attr_reader :saved_games
 
   CSVFILEPATH = "savefile.csv"
   HEADERS = ["id", "date", "data"]
@@ -10,6 +13,9 @@ class SaveLoad
    
     create_csv_file
     @total_rows = get_total_rows
+    @saved_games = []
+
+    get_saved_games
 
   end
 
@@ -37,8 +43,29 @@ class SaveLoad
     id = @total_rows
     d = Time.now
     new_date = d.strftime("%d/%m/%Y %H:%M")
-    CSV.open(CSVFILEPATH, 'w', headers: HEADERS, write_headers: true) do |csv|
-      csv << [id, new_date, data]
+    json_data = JSON.dump(data)
+    CSV.open(CSVFILEPATH, 'a') do |csv|
+      row = CSV::Row.new(HEADERS, [])
+      row["id"] = id
+      row["date"] = new_date
+      row["data"] = json_data
+      csv << row
+    end
+
+  end
+
+
+  def get_saved_games
+    
+    old_games = []
+    CSV.foreach(CSVFILEPATH, headers: true) do |row|
+      game = {}
+      game[:game_number] = row["id"]
+      game_data = JSON.load(row["data"])
+      game[:game_data] = game_data
+      old_games.push(game)
+
+      @saved_games = old_games
     end
 
   end

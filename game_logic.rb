@@ -3,24 +3,39 @@ class GameLogic
   attr_accessor :turns_remaining, :word, :word_table
   attr_accessor :word_length, :game_won, :incorrect_chars
   attr_reader :user_wants_to_save, :user_wants_to_load
+  attr_accessor :chosen_saved_game, :user_chose_saved_game
 
 
-  def initialize(word, word_table, turns_remaining, incorrect_chars)
+  def initialize
     
-    @word = word
-    @turns_remaining = turns_remaining
-    @word_length = word.length
+    @word = ""
+    @turns_remaining = 0
+    @word_length = 0
     @game_won = false
-    @word_table = word_table
-    @incorrect_chars = incorrect_chars
+    @word_table = {}
+    @incorrect_chars = {}
     @user_wants_to_save = false
     @user_wants_to_load = false
+    @chosen_saved_game = {}
+    @user_chose_saved_game = false
 
   end
 
 
-  def create_word_table
+  def load_word_table(word, word_table, turns_remaining, incorrect_chars)
+    
+    @word = word
+    @word_length = word.length
+    @word_table = word_table
+    @turns_remaining = turns_remaining
+    @incorrect_chars = incorrect_chars
   
+  end
+
+
+
+  def create_word_table
+
     @word.strip.each_char do |char|
 
       if not @word_table.has_key?(char)
@@ -91,30 +106,70 @@ class GameLogic
     
     data = {
       :word => @word,
+      :word_table => @word_table,
       :turns_remaining => @turns_remaining,
       :incorrect_chars => @incorrect_chars
     }
     
     return data
+
   end
 
 
   def check_user_new_load_game
 
     while true
-      input = gets.chomp.downcase
+      input = gets.chomp
 
       if input.length == 1 && input.match(/1/)
         @user_wants_to_load = true
-        
+        break
+      elsif input.empty?
+        break
+      else
+        puts "Press Enter to Start New Game. Press 1 to Load Game"
       end
 
     end
 
   end
+
+
+  def get_user_chosen_saved_game(saved_games)
+
+    saved_game_choices = {}
+
+    count = 1
+    saved_games.each do 
+      saved_game_choices[count] = true
+      count += 1
+    end
+
+    while true
+      input = gets.chomp
+
+      if input.match(/[1-9]/)
+        if saved_game_choices.has_key?(input.to_i)
+          @chosen_saved_game = input
+          @user_chose_saved_game = true
+          break
+        else
+          puts "Select a Game Save by choosing a number and hit Enter"
+        end
+      elsif input.match(/[0]/)
+        puts "Skipping saved game selection"
+        break
+      else
+        puts "Select a Game Save by choosing a number and hit Enter"
+      end
+
+    end
+
+    corrected_number = input.to_i - 1
+    @chosen_saved_game = saved_games[corrected_number]
+
     
-
   end
-
+    
 
 end

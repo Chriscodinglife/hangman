@@ -1,2 +1,4 @@
 id,date,data
-1,02/07/2024 19:54,"{:word=>""ozone"", :turns_remaining=>15, :incorrect_chars=>{""a""=>true, ""q""=>true, ""r""=>true, ""l""=>true, ""p""=>true}}"
+1,03/07/2024 16:03,"{""word"":""equations"",""word_table"":{""e"":true,""q"":true,""u"":false,""a"":true,""t"":false,""i"":false,""o"":false,""n"":false,""s"":false},""turns_remaining"":20,""incorrect_chars"":{}}"
+2,03/07/2024 16:14,"{""word"":""bacterial"",""word_table"":{""b"":true,""a"":true,""c"":true,""t"":false,""e"":false,""r"":false,""i"":false,""l"":false},""turns_remaining"":20,""incorrect_chars"":{}}"
+3,03/07/2024 16:21,"{""word"":""glance"",""word_table"":{""g"":false,""l"":false,""a"":true,""n"":false,""c"":true,""e"":true},""turns_remaining"":17,""incorrect_chars"":{""b"":true,""t"":true,""d"":true}}"
